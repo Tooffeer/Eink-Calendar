@@ -8,6 +8,10 @@ from display_eink import update_eink
 app = Flask(__name__)
 events_path = "events.json"
 
+
+
+
+
 # Save json data
 def save_events(data, path):
     try:
@@ -33,14 +37,18 @@ def sort_events(events):
     return sorted(events, key=lambda e: datetime.strptime(e['date'], '%Y-%m-%d'))
 
 
-# NEED TO CREATE THE STATIC DIRECTORY ASWELL
-# MAke the folder if not found
-
 # Check if events exist
 if not os.path.exists(events_path):
     # Create an empty json
     print(f"{events_path} does not exist.")
     save_events([], events_path)
+
+# Create static folder
+folder_name = "static"
+try:
+    os.mkdir(folder_name)
+except FileExistsError:
+    print(f"Directory '{folder_name}' already exists.")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
